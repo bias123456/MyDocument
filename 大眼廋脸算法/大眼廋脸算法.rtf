@@ -1,0 +1,461 @@
+{\rtf1\ansi\ansicpg936\cocoartf1561\cocoasubrtf100
+{\fonttbl\f0\fnil\fcharset134 PingFangSC-Regular;\f1\fnil\fcharset0 Monaco;}
+{\colortbl;\red255\green255\blue255;\red244\green0\blue63;\red29\green30\blue26;\red152\green224\blue35;
+\red246\green246\blue239;\red10\green86\blue216;\red98\green94\blue76;\red157\green101\blue255;\red88\green209\blue235;
+}
+{\*\expandedcolortbl;;\cssrgb\c97647\c14902\c31373;\cssrgb\c15294\c15686\c13333;\cssrgb\c65098\c88627\c17647;
+\cssrgb\c97255\c97255\c94902;\cssrgb\c0\c43529\c87843;\cssrgb\c45882\c44314\c36863;\cssrgb\c68235\c50588\c100000;\cssrgb\c40000\c85098\c93725;
+}
+\paperw11900\paperh16840\margl1440\margr1440\vieww18360\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720\partightenfactor0
+
+\f0\fs24 \cf2 \cb3 \expnd0\expndtw0\kerning0
+\'b3\'f6\'b4\'a6\'a3\'bahttp://blog.csdn.net/xiaota00/article/details/54923897\
+\
+\'b4\'f3\'d1\'db\'cb\'e3\'b7\'a8
+\f1 \
+\
+precision highp \cf4 float\cf5 ;\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf6 \cb3  \cf5 \cb1 \
+\cf6 \cb3  \cf2 varying highp vec2 \cf5 textureCoordinate;\cb1 \
+\cf6 \cb3  \cf2 uniform sampler2D \cf5 inputImageTexture;\cb1 \
+\cf6 \cb3  \cf5 \cb1 \
+\cf6 \cb3  \cf2 uniform highp \cf4 float\cf6  \cf5 scaleRatio;\cf7 // 
+\f0 \'cb\'f5\'b7\'c5\'cf\'b5\'ca\'fd\'a3\'ac
+\f1 0
+\f0 \'ce\'de\'cb\'f5\'b7\'c5\'a3\'ac\'b4\'f3\'d3\'da
+\f1 0
+\f0 \'d4\'f2\'b7\'c5\'b4\'f3
+\f1 \cf5 \cb1 \
+\cf6 \cb3  \cf2 uniform highp \cf4 float\cf6  \cf5 radius;\cf7 // 
+\f0 \'cb\'f5\'b7\'c5\'cb\'e3\'b7\'a8\'b5\'c4\'d7\'f7\'d3\'c3\'d3\'f2\'b0\'eb\'be\'b6
+\f1 \cf5 \cb1 \
+\cf6 \cb3  \cf2 uniform highp vec2 \cf5 leftEyeCenterPosition;\cf6  \cf7 // 
+\f0 \'d7\'f3\'d1\'db\'bf\'d8\'d6\'c6\'b5\'e3\'a3\'ac\'d4\'bd\'d4\'b6\'b1\'e4\'d0\'ce\'d4\'bd\'d0\'a1
+\f1 \cf5 \cb1 \
+\cf6 \cb3  \cf2 uniform highp vec2 \cf5 rightEyeCenterPosition;\cf6  \cf7 // 
+\f0 \'d3\'d2\'d1\'db\'bf\'d8\'d6\'c6\'b5\'e3
+\f1 \cf5 \cb1 \
+\cf6 \cb3  \cf2 uniform \cf4 float\cf6  \cf5 aspectRatio;\cf6  \cf7 // 
+\f0 \'cb\'f9\'b4\'a6\'c0\'ed\'cd\'bc\'cf\'f1\'b5\'c4\'bf\'ed\'b8\'df\'b1\'c8
+\f1 \cf5 \cb1 \
+\cf6 \cb3  \cf5 \cb1 \
+\cf6 \cb3  \cf2 highp vec2 warpPositionToUse\cf5 (\cf2 vec2 \cf5 centerPostion,\cf6  \cf2 vec2 \cf5 currentPosition,\cf6  \cf4 float\cf6  \cf5 radius,\cf6  \cf4 float\cf6  \cf5 scaleRatio,\cf6  \cf4 float\cf6  \cf5 aspectRatio)\cb1 \
+\cf6 \cb3  \cf5 \{\cb1 \
+\cf6 \cb3 \'a0\'a0\'a0\'a0 \cf2 vec2 \cf5 positionToUse\cf6  \cf5 =\cf6  \cf5 currentPosition;\cb1 \
+\cf6 \cb3 \'a0\'a0\'a0\'a0 \cf5 \cb1 \
+\cf6 \cb3 \'a0\'a0\'a0\'a0 \cf2 vec2 \cf5 currentPositionToUse\cf6  \cf5 =\cf6  \cf2 vec2\cf5 (currentPosition.x,\cf6  \cf5 currentPosition.y\cf6  \cf5 *\cf6  \cf5 aspectRatio\cf6  \cf5 +\cf6  \cf8 0.5\cf6  \cf5 -\cf6  \cf8 0.5\cf6  \cf5 *\cf6  \cf5 aspectRatio);\cb1 \
+\cf6 \cb3 \'a0\'a0\'a0\'a0 \cf2 vec2 \cf5 centerPostionToUse\cf6  \cf5 =\cf6  \cf2 vec2\cf5 (centerPostion.x,\cf6  \cf5 centerPostion.y\cf6  \cf5 *\cf6  \cf5 aspectRatio\cf6  \cf5 +\cf6  \cf8 0.5\cf6  \cf5 -\cf6  \cf8 0.5\cf6  \cf5 *\cf6  \cf5 aspectRatio);\cb1 \
+\cf6 \cb3 \'a0\'a0\'a0\'a0 \cf5 \cb1 \
+\cf6 \cb3 \'a0\'a0\'a0\'a0 \cf4 float\cf6  \cf5 r\cf6  \cf5 =\cf6  \cf2 distance\cf5 (currentPositionToUse,\cf6  \cf5 centerPostionToUse);\cb1 \
+\cf6 \cb3 \'a0\'a0\'a0\'a0 \cf5 \cb1 \
+\cf6 \cb3 \'a0\'a0\'a0\'a0 \cf9 if\cf5 (r\cf6  \cf5 <\cf6  \cf5 radius)\cb1 \
+\cf6 \cb3 \'a0\'a0\'a0\'a0 \cf5 \{\cb1 \
+\cf6 \cb3 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 \cf4 float\cf6  \cf5 alpha\cf6  \cf5 =\cf6  \cf8 1.0\cf6  \cf5 -\cf6  \cf5 scaleRatio\cf6  \cf5 *\cf6  \cf2 pow\cf5 (r\cf6  \cf5 /\cf6  \cf5 radius\cf6  \cf5 -\cf6  \cf8 1.0\cf5 ,\cf6  \cf8 2.0\cf5 );\cb1 \
+\cf6 \cb3 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 \cf5 positionToUse\cf6  \cf5 =\cf6  \cf5 centerPostion\cf6  \cf5 +\cf6  \cf5 alpha\cf6  \cf5 *\cf6  \cf5 (currentPosition\cf6  \cf5 -\cf6  \cf5 centerPostion);\cb1 \
+\cf6 \cb3 \'a0\'a0\'a0\'a0 \cf5 \}\cb1 \
+\cf6 \cb3 \'a0\'a0\'a0\'a0\'a0\'a0\cf5 \cb1 \
+\cf6 \cb3 \'a0\'a0\'a0\'a0 \cf9 return\cf6  \cf5 positionToUse;\cf6  \cf5 \cb1 \
+\cf6 \cb3  \cf5 \}\cb1 \
+\cf6 \cb3  \cf5 \cb1 \
+\cf6 \cb3  \cf4 void\cf6  \cf2 main\cf5 ()\cb1 \
+\cf6 \cb3  \cf5 \{\cb1 \
+\cf6 \cb3 \'a0\'a0\'a0\'a0 \cf2 vec2 \cf5 positionToUse\cf6  \cf5 =\cf6  \cf2 warpPositionToUse\cf5 (leftEyeCenterPosition,\cf6  \cf5 textureCoordinate,\cf6  \cf5 radius,\cf6  \cf5 scaleRatio,\cf6  \cf5 aspectRatio);\cb1 \
+\cf6 \cb3 \'a0\'a0\'a0\'a0\'a0\'a0\cf5 \cb1 \
+\cf6 \cb3 \'a0\'a0\'a0\'a0 \cf5 positionToUse\cf6  \cf5 =\cf6  \cf2 warpPositionToUse\cf5 (rightEyeCenterPosition,\cf6  \cf5 positionToUse,\cf6  \cf5 radius,\cf6  \cf5 scaleRatio,\cf6  \cf5 aspectRatio);\cb1 \
+\cf6 \cb3 \'a0\'a0 \cf5 \cb1 \
+\cf6 \cb3 \'a0\'a0\'a0\'a0 \cf5 gl_FragColor\cf6  \cf5 =\cf6  \cf2 texture2D\cf5 (inputImageTexture,\cf6  \cf5 positionToUse);\cf6 \'a0\'a0 \cf5 \cb1 \
+\cf6 \cb3  \cf5 \}\
+\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f0 \cf5 \'8f\'43\'c1\'b3\'cb\'e3\'b7\'a8
+\f1 \
+\
+\
+\cf2 precision\
+highp\
+\cf4 float\cf5 ;\
+\
+\
+\
+\cf2 varying\
+highp\
+vec2\
+\cf5 textureCoordinate;\
+\
+\cf2 uniform\
+sampler2D\
+\cf5 inputImageTexture;\
+\
+\
+\
+\cf2 uniform\
+highp\
+\cf4 float\cf6 \
+\cf5 radius;\
+\
+\
+\
+\cf2 uniform\
+highp\
+\cf4 float\cf6 \
+\cf5 aspectRatio;\
+\
+\
+\
+\cf2 uniform\
+\cf4 float\cf6 \
+\cf5 leftContourPoints[MAX_CONTOUR_POINT_COUNT*\cf8 2\cf5 ];\
+\
+\cf2 uniform\
+\cf4 float\cf6 \
+\cf5 rightContourPoints[MAX_CONTOUR_POINT_COUNT*\cf8 2\cf5 ];\
+\
+\cf2 uniform\
+\cf4 float\cf6 \
+\cf5 deltaArray[MAX_CONTOUR_POINT_COUNT];\
+\
+\cf2 uniform\
+\cf4 int\cf6 \
+\cf5 arraySize;\
+\
+\
+\
+\cf2 highp\
+vec2\
+warpPositionToUse\cf5 (\cf2 vec2\
+\cf5 currentPoint,\cf6 \
+\cf2 vec2\
+\cf5 contourPointA,\cf6 \'a0\'a0\cf2 vec2\
+\cf5 contourPointB,\cf6 \
+\cf4 float\cf6 \
+\cf5 radius,\cf6 \
+\cf4 float\cf6 \
+\cf5 delta,\cf6 \
+\cf4 float\cf6 \
+\cf5 aspectRatio)\
+\
+\{\
+\
+\pard\pardeftab720\partightenfactor0
+\cf6 \'a0\'a0\'a0\'a0\
+\pard\pardeftab720\partightenfactor0
+\cf2 vec2\
+\cf5 positionToUse\cf6 \
+\cf5 =\cf6 \
+\cf5 currentPoint;\
+\
+\pard\pardeftab720\partightenfactor0
+\cf6 \'a0\'a0\'a0\'a0\
+\pard\pardeftab720\partightenfactor0
+\cf5 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf6 \'a0\'a0\'a0\'a0\
+\pard\pardeftab720\partightenfactor0
+\cf2 vec2\
+\cf5 currentPointToUse\cf6 \
+\cf5 =\cf6 \
+\cf2 vec2\cf5 (currentPoint.x,\cf6 \
+\cf5 currentPoint.y\cf6 \
+\cf5 *\cf6 \
+\cf5 aspectRatio\cf6 \
+\cf5 +\cf6 \
+\pard\pardeftab720\partightenfactor0
+\cf8 0.5\cf6 \
+\pard\pardeftab720\partightenfactor0
+\cf5 -\cf6 \
+\pard\pardeftab720\partightenfactor0
+\cf8 0.5\cf6 \
+\pard\pardeftab720\partightenfactor0
+\cf5 *\cf6 \
+\cf5 aspectRatio);\
+\
+\pard\pardeftab720\partightenfactor0
+\cf6 \'a0\'a0\'a0\'a0\
+\pard\pardeftab720\partightenfactor0
+\cf2 vec2\
+\cf5 contourPointAToUse\cf6 \
+\cf5 =\cf6 \
+\cf2 vec2\cf5 (contourPointA.x,\cf6 \
+\cf5 contourPointA.y\cf6 \
+\cf5 *\cf6 \
+\cf5 aspectRatio\cf6 \
+\cf5 +\cf6 \
+\pard\pardeftab720\partightenfactor0
+\cf8 0.5\cf6 \
+\pard\pardeftab720\partightenfactor0
+\cf5 -\cf6 \
+\pard\pardeftab720\partightenfactor0
+\cf8 0.5\cf6 \
+\pard\pardeftab720\partightenfactor0
+\cf5 *\cf6 \
+\cf5 aspectRatio);\
+\
+\pard\pardeftab720\partightenfactor0
+\cf6 \'a0\'a0\'a0\'a0\
+\pard\pardeftab720\partightenfactor0
+\cf5 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf6 \'a0\'a0\'a0\'a0\
+\pard\pardeftab720\partightenfactor0
+\cf4 float\cf6 \
+\cf5 r\cf6 \
+\cf5 =\cf6 \
+\cf2 distance\cf5 (currentPointToUse,\cf6 \
+\cf5 contourPointAToUse);\
+\
+\pard\pardeftab720\partightenfactor0
+\cf6 \'a0\'a0\'a0\'a0\
+\cf9 if\cf5 (r\cf6 \
+\pard\pardeftab720\partightenfactor0
+\cf5 <\cf6 \
+\cf5 radius)\
+\
+\pard\pardeftab720\partightenfactor0
+\cf6 \'a0\'a0\'a0\'a0\
+\pard\pardeftab720\partightenfactor0
+\cf5 \{\
+\
+\pard\pardeftab720\partightenfactor0
+\cf6 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+\pard\pardeftab720\partightenfactor0
+\cf2 vec2\
+\cf5 dir\cf6 \
+\cf5 =\cf6 \
+\cf2 normalize\cf5 (contourPointB\cf6 \
+\cf5 -\cf6 \
+\cf5 contourPointA);\
+\
+\pard\pardeftab720\partightenfactor0
+\cf6 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+\pard\pardeftab720\partightenfactor0
+\cf4 float\cf6 \
+\cf5 dist\cf6 \
+\cf5 =\cf6 \
+\cf5 radius\cf6 \
+\cf5 *\cf6 \
+\cf5 radius\cf6 \
+\cf5 -\cf6 \
+\cf5 r\cf6 \
+\cf5 *\cf6 \
+\cf5 r;\
+\
+\pard\pardeftab720\partightenfactor0
+\cf6 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+\pard\pardeftab720\partightenfactor0
+\cf4 float\cf6 \
+\cf5 alpha\cf6 \
+\cf5 =\cf6 \
+\cf5 dist\cf6 \
+\cf5 /\cf6 \
+\cf5 (dist\cf6 \
+\cf5 +\cf6 \
+\cf5 (r-delta)\cf6 \
+\cf5 *\cf6 \
+\cf5 (r-delta));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf6 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+\pard\pardeftab720\partightenfactor0
+\cf5 alpha\cf6 \
+\cf5 =\cf6 \
+\cf5 alpha\cf6 \
+\cf5 *\cf6 \
+\cf5 alpha;\
+\
+\pard\pardeftab720\partightenfactor0
+\cf6 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+\pard\pardeftab720\partightenfactor0
+\cf5 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf6 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+\pard\pardeftab720\partightenfactor0
+\cf5 positionToUse\cf6 \
+\cf5 =\cf6 \
+\cf5 positionToUse\cf6 \
+\cf5 -\cf6 \
+\cf5 alpha\cf6 \
+\cf5 *\cf6 \
+\cf5 delta\cf6 \
+\cf5 *\cf6 \
+\cf5 dir;\
+\
+\pard\pardeftab720\partightenfactor0
+\cf6 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+\pard\pardeftab720\partightenfactor0
+\cf5 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf6 \'a0\'a0\'a0\'a0\
+\pard\pardeftab720\partightenfactor0
+\cf5 \}\
+\
+\pard\pardeftab720\partightenfactor0
+\cf6 \'a0\'a0\'a0\'a0\
+\pard\pardeftab720\partightenfactor0
+\cf5 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf6 \'a0\'a0\'a0\'a0\
+\cf9 return\cf6 \
+\pard\pardeftab720\partightenfactor0
+\cf5 positionToUse;\
+\
+\pard\pardeftab720\partightenfactor0
+\cf6 \'a0\'a0\'a0\'a0\
+\pard\pardeftab720\partightenfactor0
+\cf5 \
+\
+\}\
+\
+\
+\
+\
+\
+\cf4 void\cf6 \
+\cf2 main\cf5 ()\
+\
+\{\
+\
+\pard\pardeftab720\partightenfactor0
+\cf6 \'a0\'a0\'a0\'a0\
+\pard\pardeftab720\partightenfactor0
+\cf2 vec2\
+\cf5 positionToUse\cf6 \
+\cf5 =\cf6 \
+\cf5 textureCoordinate;\
+\
+\pard\pardeftab720\partightenfactor0
+\cf6 \'a0\'a0\'a0\'a0\
+\pard\pardeftab720\partightenfactor0
+\cf5 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf6 \'a0\'a0\'a0\'a0\
+\cf9 for\cf5 (\cf4 int\cf6 \
+\pard\pardeftab720\partightenfactor0
+\cf5 i\cf6 \
+\cf5 =\cf6 \
+\pard\pardeftab720\partightenfactor0
+\cf8 0\cf5 ;\cf6 \
+\pard\pardeftab720\partightenfactor0
+\cf5 i\cf6 \
+\cf5 <\cf6 \
+\cf5 arraySize;\cf6 \
+\cf5 i++)\
+\
+\pard\pardeftab720\partightenfactor0
+\cf6 \'a0\'a0\'a0\'a0\
+\pard\pardeftab720\partightenfactor0
+\cf5 \{\
+\
+\pard\pardeftab720\partightenfactor0
+\cf6 \'a0\'a0\'a0\'a0\'a0\'a0\cf5 \
+\
+\cf6 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+\pard\pardeftab720\partightenfactor0
+\cf5 positionToUse\cf6 \
+\cf5 =\cf6 \
+\cf2 warpPositionToUse\cf5 (positionToUse,\cf6 \
+\cf2 vec2\cf5 (leftContourPoints[i\cf6 \
+\cf5 *\cf6 \
+\pard\pardeftab720\partightenfactor0
+\cf8 2\cf5 ],\cf6 \
+\pard\pardeftab720\partightenfactor0
+\cf5 leftContourPoints[i\cf6 \
+\cf5 *\cf6 \
+\pard\pardeftab720\partightenfactor0
+\cf8 2\cf6 \
+\pard\pardeftab720\partightenfactor0
+\cf5 +\cf6 \
+\pard\pardeftab720\partightenfactor0
+\cf8 1\cf5 ]),\cf6 \
+\pard\pardeftab720\partightenfactor0
+\cf2 vec2\cf5 (rightContourPoints[i\cf6 \
+\cf5 *\cf6 \
+\pard\pardeftab720\partightenfactor0
+\cf8 2\cf5 ],\cf6 \
+\pard\pardeftab720\partightenfactor0
+\cf5 rightContourPoints[i\cf6 \
+\cf5 *\cf6 \
+\pard\pardeftab720\partightenfactor0
+\cf8 2\cf6 \
+\pard\pardeftab720\partightenfactor0
+\cf5 +\cf6 \
+\pard\pardeftab720\partightenfactor0
+\cf8 1\cf5 ]),\cf6 \
+\pard\pardeftab720\partightenfactor0
+\cf5 radius,\cf6 \
+\cf5 deltaArray[i],\cf6 \
+\cf5 aspectRatio);\
+\
+\pard\pardeftab720\partightenfactor0
+\cf6 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+\pard\pardeftab720\partightenfactor0
+\cf5 positionToUse\cf6 \
+\cf5 =\cf6 \
+\cf2 warpPositionToUse\cf5 (positionToUse,\cf6 \
+\cf2 vec2\cf5 (rightContourPoints[i\cf6 \
+\cf5 *\cf6 \
+\pard\pardeftab720\partightenfactor0
+\cf8 2\cf5 ],\cf6 \
+\pard\pardeftab720\partightenfactor0
+\cf5 rightContourPoints[i\cf6 \
+\cf5 *\cf6 \
+\pard\pardeftab720\partightenfactor0
+\cf8 2\cf6 \
+\pard\pardeftab720\partightenfactor0
+\cf5 +\cf6 \
+\pard\pardeftab720\partightenfactor0
+\cf8 1\cf5 ]),\cf6 \
+\pard\pardeftab720\partightenfactor0
+\cf2 vec2\cf5 (leftContourPoints[i\cf6 \
+\cf5 *\cf6 \
+\pard\pardeftab720\partightenfactor0
+\cf8 2\cf5 ],\cf6 \
+\pard\pardeftab720\partightenfactor0
+\cf5 leftContourPoints[i\cf6 \
+\cf5 *\cf6 \
+\pard\pardeftab720\partightenfactor0
+\cf8 2\cf6 \
+\pard\pardeftab720\partightenfactor0
+\cf5 +\cf6 \
+\pard\pardeftab720\partightenfactor0
+\cf8 1\cf5 ]),\cf6 \
+\pard\pardeftab720\partightenfactor0
+\cf5 radius,\cf6 \
+\cf5 deltaArray[i],\cf6 \
+\cf5 aspectRatio);\
+\
+\pard\pardeftab720\partightenfactor0
+\cf6 \'a0\'a0\'a0\'a0\
+\pard\pardeftab720\partightenfactor0
+\cf5 \}\
+\
+\pard\pardeftab720\partightenfactor0
+\cf6 \'a0\'a0\'a0\'a0\
+\pard\pardeftab720\partightenfactor0
+\cf5 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf6 \'a0\'a0\'a0\'a0\
+\pard\pardeftab720\partightenfactor0
+\cf5 gl_FragColor\cf6 \
+\cf5 =\cf6 \
+\cf2 texture2D\cf5 (inputImageTexture,\cf6 \
+\cf5 positionToUse);\
+\
+\pard\pardeftab720\partightenfactor0
+\cf6 \'a0\'a0\'a0\'a0\
+\pard\pardeftab720\partightenfactor0
+\cf5 \
+\
+\}\cb1 \
+}
